@@ -1,0 +1,60 @@
+{% load static %}
+
+  
+
+
+<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+  
+  {% comment %} <a class="navbar-brand" href="{% url 'home'  %}"><img src=""
+      alt="" />
+
+    Clarusway FS</a> {% endcomment %}
+
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      
+      <li class="nav-item">
+        {% comment %} {% url '/' %} {% endcomment %}
+        <a class="navbar-brand" href="{% url 'home' %}">BlogApp Django</a>
+      </li>
+      <li><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+      <li> <a class="nav-link" href="{% url 'about' %}">About</a></li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+
+      {% if request.user.is_authenticated %}
+
+      {% if request.user.is_superuser %}
+
+      <li class="nav-item">
+        <a class="nav-link" href="/admin">Admin</a>
+      </li>
+      {% endif %}
+
+      
+      <li class="nav-item">
+        {% comment %} {% url 'new_post' %} {% endcomment %}
+        <a class="nav-link" href="{% url 'new_post' %}">New Post</a>
+      </li>
+      <li class="nav-item">
+        {% comment %} {% url 'profile' %} {% endcomment %}
+        <a class="nav-link" href="{% url 'profile' user.id %}">
+          <img src="{{user.profile_pic}}" alt="Profile" style="width:40px;"></a>
+      </li>
+      <li class="nav-item">
+        {% comment %} {% url 'logout' %} {% endcomment %}
+        <a class="nav-link" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span> Log Out</a>
+      </li>
+      {% else %}
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{% url 'register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="{% url 'user_login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+      {% endif %}
+
+
+    </ul>
+  </div>
+</nav>

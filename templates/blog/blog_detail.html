@@ -1,0 +1,110 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <div
+    class="card mx-auto h-100 border-secondary p-1 shadow"
+    style="width: 400px"
+  >
+    <div class="card-body text-center">
+      <a href="{% url 'detail' post.slug %}" class="readmore">
+        <img src="{{ post.image }}" alt="card__image" class="card-img-top"
+      /></a>
+      <div class=" mb-auto">
+        <h6 class="card-title">{{ post.category }}</h6>
+        <h4 class="card-title">{{post.title}}</h4>
+        <p class="card-text">{{ post.content }}</p>
+        
+          <form action="{% url 'post_like' post.pk %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" name="post_id" value="{{post.id}}">
+                <i class="bi bi-heart" style="margin: 2px">
+                  <small>{{ post.get_like_count }}</small>
+                </i>
+              </button>
+  
+          </form>
+          <i class="bi bi-eye" style="margin: 2px">
+            <small>{{ post.get_view_count }}</small></i>
+          <i class="bi bi-chat-left-text" style="margin: 2px">
+            <small>{{ post.get_comment_count }}</small></i>
+      </div><br>
+      <div class=" mb-auto">
+        <img src="" alt="user_image" class="card-img-top" />
+        <span class="card-text">{{ post.user }}</span><br>
+        <p>Posted <span>{{ post.publish_date|timesince }}</span> ago</p>
+      </div>
+      <div class="comment">
+        {% for comment in comment_list %}
+          <p class="info">
+            Comment by {{ comment.user }}
+            {{ comment.date_added }}
+          </p>
+          {{ comment.body|linebreaks }}
+        </div>
+        {% empty %}
+        <p>There are no comments yet.</p>
+        {% endfor %}
+        {% if new_comment %}
+        <h2>Your comment has been added.</h2>
+        {% else %}
+        <p>Add a new comment</p>
+        <form action="{% url 'detail' post.slug %}" method="post">
+          {{ comment_form.as_p }}
+          {% csrf_token %}
+          <input type="submit" value="Add comment">
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    <div class="card-body text-center">
+      {% if user == post.user %}
+    
+      <a href="{% url 'update' post.slug %}" class="card-link btn btn-primary"
+        >Edit</a
+      >
+      <a
+        href="{% url 'delete' post.slug %}"
+        class="card-link btn btn-danger"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+        >Delete</a
+      >
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Post!</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">Are you sure you want to delete this post?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <form action="" method="POST">
+          {% csrf_token %}
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

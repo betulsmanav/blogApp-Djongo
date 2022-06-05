@@ -1,0 +1,47 @@
+{% extends 'base.html' %} 
+{% block content %}
+ {% load static %} 
+ <div class="container">
+ <div class="row">
+ {% for post in posts %}
+ <div class="col g-3">
+    <div class="card h-100 border-secondary p-1 shadow" style="width: 400px">
+        <div class="card-body text-center" style="width: 400px">
+          <a href="{% url 'detail' post.slug %}" class="readmore">
+            <img
+              src="{{post.image}}"
+              alt="card__image"
+              class="card-img-top"
+          /></a>
+          <div class="card-body mb-auto">
+            <h6 class="card-title">{{ post.category }}</h6>
+            <h4 class="card-title">{{post.title}}</h4>
+            <p class="card-text">{{ post.content }}</p>
+            <div>
+              <i class="bi bi-heart" style="margin: 2px">
+                <small>{{ post.get_like_count }}</small></i
+              >
+              <i class="bi bi-eye" style="margin: 2px">
+                <small>{{ post.get_view_count }}</small></i
+              >
+              <i class="bi bi-chat-left-text" style="margin: 2px">
+                <small>{{ post.get_comment_count }}</small></i
+              >
+            </div>
+          </div>
+          <div class="card-body mb-auto">
+            <img
+              src=""
+              alt="user_image"
+              class="card-img-top"
+            />
+            <span class="card-text">{{ post.user }}</span>
+            <p>Posted <span>{{ post.publish_date|timesince }}</span> ago</p>
+          </div>
+        </div>
+    </div>
+  </div>
+{% endfor %} 
+</div>
+</div>
+{% endblock content %}
